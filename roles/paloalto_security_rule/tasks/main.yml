@@ -14,16 +14,21 @@
     device_group: "{{ device_group }}"
     commit: false  # Commit separately later
 
-- name: "panorama: commit and push"
-  block:
-    - name: Commit candidate config to running config of Panorama
-      paloaltonetworks.panos.panos_commit_panorama:
-        provider: "{{ provider }}"
-      run_once: true
- 
-    - name: Push
-      paloaltonetworks.panos.panos_commit_push:
-        provider: "{{ provider }}"
-        style: 'device group'
-        name: "ta01bdh6pocpa1"
-      run_once: true
+- name: Commit candidate configuration
+  paloaltonetworks.panos.panos_commit_panorama:
+    provider: "{{ provider }}"
+  register: results
+
+- debug:
+    msg: "Commit with job ID: {{ results.jobid }} had output: {{ results.details }}"
+
+- name: Commit and Push template configuration
+  paloaltonetworks.panos.panos_commit_push:
+    provider: "{{ provider }}"
+    style: "device group"
+    name: "{{ device_group }}"
+    include_template: no
+  register: results
+
+- debug:
+    msg: "Push with job ID: {{ results.jobid }} finished"
