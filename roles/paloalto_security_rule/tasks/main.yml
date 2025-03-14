@@ -26,6 +26,7 @@
     style: 'device group'
     name: '{{ item }}'
     sync: true
-  loop:
-    - ta01bdh6pocpa1
-  when: panorama_commit_result is succeeded  
+  loop: "{{ device_group | default([]) }}"
+  when:
+    - panorama_commit_result is succeeded
+    - device_groups is defined and device_groups | length > 0  
