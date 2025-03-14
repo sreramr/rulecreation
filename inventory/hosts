@@ -1,0 +1,5 @@
+[panorama]
+10.192.32.231 ansible_user=svcautomat ansible_password=5}=c@nPAZ98n
+
+[local_server]
+DL01BDH6NANSAP1 ansible_user=hcluser ansible_password=Azure@2025$ ansible_connection=ssh

@@ -1,0 +1,7 @@
+---
+# Default variables for the provider (Panorama)
+provider:
+  host: "10.192.32.231"
+  username: "svcautomat"
+  password: "5}=c@nPAZ98n"
+  api_key: ""  # Optionally, you can use API key for authenticat

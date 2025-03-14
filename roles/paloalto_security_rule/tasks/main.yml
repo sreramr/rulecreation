@@ -1,0 +1,30 @@
+---
+- name: Add security rule to Panorama
+  paloaltonetworks.panos.panos_security_rule:
+    provider: "{{ provider }}"
+    rule_name: "{{ rule_name }}"
+    description: "{{ description }}"
+    source_zone: "{{ source_zone }}"
+    destination_zone: "{{ destination_zone }}"
+    source_ip: "{{ source_ip }}"
+    destination_ip: "{{ destination_ip }}"
+    application: "any"
+    service: "{{ service }}"
+    action: "{{ action }}"
+    device_group: "{{ device_group }}"
+    commit: false  # Do not commit yet, commit will be done later in the playbook
+
+- name: Commit the changes to Panorama
+  paloaltonetworks.panos.panos_commit:
+    provider: "{{ provider }}"
+    commit_all: true
+    device_group: "{{ device_group }}"
+  when: commit is true
+
+- name: Commit the changes to the firewall (if applicable)
+  paloaltonetworks.panos.panos_commit:
+    provider: "{{ provider }}"
+    commit_all: true
+    device_group: "{{ device_group }}"
+    commit_type: "local"
+  when: commit is true

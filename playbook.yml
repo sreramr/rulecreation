@@ -1,0 +1,19 @@
+---
+- name: Configure Palo Alto security rule in Panorama
+  hosts: local_server  # This will execute the playbook on 10.23.243.10
+  gather_facts: no
+  become: no
+  vars:
+    device_group: "dns23hyekswehpoc"
+    rule_name: "Ansible test 1"
+    description: "An Ansible test pre-rule"
+    source_zone: ['internal']
+    destination_zone: ['external']
+    source_ip: ['1.2.3.4']
+    destination_ip: ['any']
+    service: ['service-http']
+    action: "allow"
+    commit: true  # Set to true to commit after adding the rule
+
+  roles:
+    - paloalto_security_rule
