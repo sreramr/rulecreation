@@ -20,11 +20,10 @@
     sync: true
   register: panorama_commit_result
 
-- name: push to multiple device groups
-  paloaltonetworks.panos.panos_commit_push:
+- name: Commit all changes from Panorama to firewalls
+  paloaltonetworks.panos.panos_commit_all:
     provider: "{{ provider }}"
-    style: 'device group'
-    name: "ta01bdh6pocpa1"
+    style: "device group"
     sync: true
   when:
     - panorama_commit_result is succeeded
