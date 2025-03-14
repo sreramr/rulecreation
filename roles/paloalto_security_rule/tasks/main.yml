@@ -22,11 +22,11 @@
 
 - name: push to multiple device groups
   paloaltonetworks.panos.panos_commit_push:
-    provider: '{{ provider }}'
+    provider: "{{ provider }}"
     style: 'device group'
     name: '{{ item }}'
     sync: true
-  loop: "{{ device_group | default([]) }}"
+  loop:
+    - ta01bdh6pocpa1
   when:
     - panorama_commit_result is succeeded
-    - device_groups is defined and device_groups | length > 0  
