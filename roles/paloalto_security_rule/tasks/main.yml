@@ -20,7 +20,7 @@
   register: results
 
 - debug:
-    msg: "Commit with job ID: {{ results.jobid }} had output: {{ results.details }}"
+    msg: "Commit with job ID"
 
 - name: Commit and Push template configuration
   paloaltonetworks.panos.panos_commit_push:
@@ -31,4 +31,4 @@
   register: results
 
 - debug:
-    msg: "Push with job ID: {{ results.jobid }} finished"
+    msg: "Push with job ID"
