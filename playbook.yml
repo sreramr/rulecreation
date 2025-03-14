@@ -7,9 +7,9 @@
     device_group: "dns23hyekswehpoc"
     rule_name: "Ansible test 1"
     description: "An Ansible test pre-rule"
-    source_zone: ['internal']
-    destination_zone: ['external']
-    source_ip: ['1.2.3.4']
+    source_zone: ['any']
+    destination_zone: ['any']
+    source_ip: ['Private-Newtork-172']
     destination_ip: ['any']
     service: ['service-http']
     action: "allow"
