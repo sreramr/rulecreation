@@ -13,21 +13,10 @@
     device_group: "{{ device_group }}"
     commit: false  # Commit separately later
 
-- name: Commit candidate configuration on Panorama
-  paloaltonetworks.panos.panos_commit_panorama:
+- name: Commit changes on Panorama
+  paloaltonetworks.panos.panos_commit:
     provider: "{{ provider }}"
-  register: panorama_commit_result
+  register: commit_result
 
 - debug:
-    msg: "Commit with job ID {{ panorama_commit_result }}"
-
-- name: Commit and push configuration to all device groups
-  paloaltonetworks.panos.panos_commit_all:
-    provider: "{{ provider }}"
-    style: "device group"
-    sync: true
-  when: panorama_commit_result is succeeded
-  register: commit_all_result
-
-- debug:
-    msg: "Commit and push completed with job ID {{ commit_all_result }}"
+    msg: "Commit completed with job ID {{ commit_result }}"
