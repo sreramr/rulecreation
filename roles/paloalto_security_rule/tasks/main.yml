@@ -22,7 +22,7 @@
 
 - name: push to multiple device groups
   paloaltonetworks.panos.panos_commit_push:
-    provider: '{{ credentials }}'
+    provider: '{{ provider }}'
     style: 'device group'
     name: '{{ item }}'
     sync: true
