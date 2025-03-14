@@ -17,8 +17,20 @@
 - name: Commit the changes to Panorama
   paloaltonetworks.panos.panos_commit_panorama:
     provider: "{{ provider }}"
-    sync: true  # Wait until commit completes
+    sync: true
   register: panorama_commit_result
+
+- name: Fetch list of firewall serial numbers in the device group
+  paloaltonetworks.panos.panos_op:
+    provider: "{{ provider }}"
+    cmd: "<show><devices><connected></connected></devices></show>"
+  register: firewall_info
+  when: panorama_commit_result is succeeded
+
+- name: Extract serial numbers of firewalls in the device group
+  set_fact:
+    firewall_serial_numbers: "{{ firewall_info.stdout_lines | select('search', device_group) | map(attribute='serial') | list }}"
+  when: panorama_commit_result is succeeded
 
 - name: Push changes to all firewalls in the device group
   paloaltonetworks.panos.panos_commit_push:
@@ -26,6 +38,6 @@
     sync: true
     include_template: true
     name: "{{ item }}"  # Firewall serial number
-    style: "device group"  # Correct style
-  loop: "{{ device_group }}"  # List of firewalls in device group
-  when: panorama_commit_result is succeeded 
+    style: "device group"
+  loop: "{{ firewall_serial_numbers }}"  # List of firewalls in device group
+  when: firewall_serial_numbers is defined and firewall_serial_numbers | length > 0
