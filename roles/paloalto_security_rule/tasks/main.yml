@@ -21,8 +21,9 @@
   register: panorama_commit_result
 
 - name: Commit all changes from Panorama to firewalls
-  paloaltonetworks.panos.panos_commit_firewall:
+  paloaltonetworks.panos.panos_commit_push:
     provider: "{{ provider }}"
-    exclude_device_and_network: true
+    style: 'device group'
+    name: "ta01bdh6pocpa1"
   when:
     - panorama_commit_result is succeeded
