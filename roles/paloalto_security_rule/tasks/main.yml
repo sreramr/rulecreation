@@ -24,7 +24,7 @@
   paloaltonetworks.panos.panos_commit_push:
     provider: "{{ provider }}"
     style: 'device group'
-    name: "{{ device_group }}"
+    name: "ta01bdh6pocpa1"
     sync: true
   when:
     - panorama_commit_result is succeeded
