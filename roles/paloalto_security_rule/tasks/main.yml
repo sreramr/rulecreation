@@ -17,14 +17,10 @@
 - name: Commit the changes to Panorama
   paloaltonetworks.panos.panos_commit:
     provider: "{{ provider }}"
-    commit_all: true
-    device_group: "{{ device_group }}"
-  when: commit is true
+  register: panorama_commit_result  # Capture the commit result
 
-- name: Commit the changes to the firewall (if applicable)
-  paloaltonetworks.panos.panos_commit:
+- name: Push the commit to the firewall
+  paloaltonetworks.panos.panos_commit_firewall:
     provider: "{{ provider }}"
-    commit_all: true
-    device_group: "{{ device_group }}"
-    commit_type: "local"
-  when: commit is true
+    device_group: "{{ device_group }}"  # Specify the target device group
+  when: panorama_commit_result is succeeded
