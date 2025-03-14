@@ -14,16 +14,16 @@
     device_group: "{{ device_group }}"
     commit: false  # Commit separately later
 
-- name: Commit the changes to Panorama
-  paloaltonetworks.panos.panos_commit_panorama:
-    provider: "{{ provider }}"
-    sync: true
-  register: panorama_commit_result
-
-- name: Commit all changes from Panorama to firewalls
-  paloaltonetworks.panos.panos_commit_push:
-    provider: "{{ provider }}"
-    style: 'device group'
-    name: "ta01bdh6pocpa1"
-  when:
-    - panorama_commit_result is succeeded
+- name: "panorama: commit and push"
+  block:
+    - name: Commit candidate config to running config of Panorama
+      paloaltonetworks.panos.panos_commit_panorama:
+        provider: "{{ provider }}"
+      run_once: true
+ 
+    - name: Push
+      paloaltonetworks.panos.panos_commit_push:
+        provider: "{{ provider }}"
+        style: 'device group'
+        name: "ta01bdh6pocpa1"
+      run_once: true
