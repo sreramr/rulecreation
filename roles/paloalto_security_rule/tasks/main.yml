@@ -1,4 +1,3 @@
----
 - name: Add security rule to Panorama
   paloaltonetworks.panos.panos_security_rule:
     provider: "{{ provider }}"
@@ -14,21 +13,21 @@
     device_group: "{{ device_group }}"
     commit: false  # Commit separately later
 
-- name: Commit candidate configuration
+- name: Commit candidate configuration on Panorama
   paloaltonetworks.panos.panos_commit_panorama:
     provider: "{{ provider }}"
-  register: results
+  register: panorama_commit_result
 
 - debug:
-    msg: "Commit with job ID"
+    msg: "Commit with job ID {{ panorama_commit_result }}"
 
-- name: Commit and Push template configuration
-  paloaltonetworks.panos.panos_commit_push:
+- name: Commit and push configuration to all device groups
+  paloaltonetworks.panos.panos_commit_all:
     provider: "{{ provider }}"
     style: "device group"
-    name: "{{ device_group }}"
-    include_template: no
-  register: results
+    sync: true
+  when: panorama_commit_result is succeeded
+  register: commit_all_result
 
 - debug:
-    msg: "Push with job ID"
+    msg: "Commit and push completed with job ID {{ commit_all_result }}"
