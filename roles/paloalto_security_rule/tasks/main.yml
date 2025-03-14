@@ -12,15 +12,19 @@
     service: "{{ service }}"
     action: "{{ action }}"
     device_group: "{{ device_group }}"
-    commit: false  # Do not commit yet, commit will be done later in the playbook
+    commit: false  # Commit separately later
 
 - name: Commit the changes to Panorama
-  paloaltonetworks.panos.panos_commit:
+  paloaltonetworks.panos.panos_commit_panorama:
     provider: "{{ provider }}"
-  register: panorama_commit_result  # Capture the commit result
+    sync: true  # Wait until commit completes
+  register: panorama_commit_result
 
-- name: Push the commit to the firewall
-  paloaltonetworks.panos.panos_commit_firewall:
+- name: Push changes to all firewalls in a device group
+  paloaltonetworks.panos.panos_commit_push:
     provider: "{{ provider }}"
-    device_group: "{{ device_group }}"  # Specify the target device group
+    sync: true
+    include_template: true
+    include_shared_objects: true
+    device_group: "{{ device_group }}"  # Push to all firewalls in the group
   when: panorama_commit_result is succeeded
