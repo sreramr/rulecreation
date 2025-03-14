@@ -27,4 +27,5 @@
     include_template: true
     include_shared_objects: true
     device_group: "{{ device_group }}"  # Push to all firewalls in the group
+    style: "device-group"  # Required parameter to specify push type
   when: panorama_commit_result is succeeded
