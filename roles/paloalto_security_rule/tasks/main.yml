@@ -20,12 +20,12 @@
     sync: true  # Wait until commit completes
   register: panorama_commit_result
 
-- name: Push changes to all firewalls in a device group
+- name: Push changes to all firewalls in the device group
   paloaltonetworks.panos.panos_commit_push:
     provider: "{{ provider }}"
     sync: true
     include_template: true
-    include_shared_objects: true
-    device_group: "{{ device_group }}"  # Push to all firewalls in the group
-    style: "device group"  # Required parameter to specify push type
-  when: panorama_commit_result is succeeded
+    name: "{{ item }}"  # Firewall serial number
+    style: "device group"  # Correct style
+  loop: "{{ device_group }}"  # List of firewalls in device group
+  when: panorama_commit_result is succeeded 
